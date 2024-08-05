@@ -1,0 +1,41 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  email      String   @unique
+  password   String
+  role       String   @default("user") // roles can be "user", "owner", "admin"
+  location   String?  // Optional field
+  phoneNumber String? // Optional field
+  rentals    Rental[]
+  status   Boolean  @default(true)
+}
+
+model Book {
+  id          Int      @id @default(autoincrement())
+  title       String
+  author      String
+  description String?
+  available   Boolean  @default(true)
+  rentals     Rental[]
+}
+
+model Rental {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  bookId   Int
+  startAt  DateTime
+  endAt    DateTime
+  status   String   @default("rented") // statuses can be "rented", "returned"
+
+  user     User     @relation(fields: [userId], references: [id])
+  book     Book     @relation(fields: [bookId], references: [id])
+}
