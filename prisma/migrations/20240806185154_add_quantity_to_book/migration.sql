@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Book" ADD COLUMN     "quantity" INTEGER NOT NULL DEFAULT 0,
+ALTER COLUMN "isPublic" SET DEFAULT false;
