@@ -4,6 +4,7 @@ const cors = require('cors'); // Add this line
 const authRoutes = require('./routes/auth');
 const bookRoutes = require('./routes/book');
 const rentalRoutes = require('./routes/rental');
+const ownersRoutes = require('./routes/owners');
 const authMiddleware = require('./middleware/auth');
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/rentals', rentalRoutes);
+app.use('/api/owners', ownersRoutes);
 
 app.get('/api/protected', authMiddleware, (req, res) => {
   res.json({ message: 'This is a protected route', user: req.user });

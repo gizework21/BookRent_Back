@@ -66,11 +66,11 @@ router.get('/:id', async (req, res) => {
 // Update a book
 router.put('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
-  const { title, author, description, available, category } = req.body;
+  const { title, author, description, available, category, isPublic } = req.body;
   try {
     const book = await prisma.book.update({
       where: { id: parseInt(id) },
-      data: { title, author, description, available, category }
+      data: { title, author, description, available, category, isPublic }
     });
     res.status(200).json(book);
   } catch (error) {
