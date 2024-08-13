@@ -7,7 +7,10 @@ const router = express.Router();
 
 // Add a new book
 router.post('/', authMiddleware, async (req, res) => {
-  const { title, author, description, category, ownerId, price, quantity } = req.body;
+  const { title, author, description, category, price, quantity } = req.body;
+  
+  // Extract userId from the authenticated user
+  const ownerId = req.user.userId;
 
   try {
     if (price === undefined || price === null) {
@@ -18,7 +21,15 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 
     const book = await prisma.book.create({
-      data: { title, author, description, category, ownerId, price, quantity }
+      data: {
+        title,
+        author,
+        description,
+        category,
+        ownerId, // Automatically set the ownerId from the authenticated user
+        price,
+        quantity
+      }
     });
 
     res.status(201).json(book);
@@ -27,6 +38,7 @@ router.post('/', authMiddleware, async (req, res) => {
     res.status(400).json({ error: 'Error creating book', details: error.message });
   }
 });
+
 
 
 // Get all books with filtering
