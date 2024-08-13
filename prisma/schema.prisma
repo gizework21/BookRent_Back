@@ -18,7 +18,7 @@ model User {
   username    String     @unique
   email       String     @unique
   password    String
-  role        String     @default("user") // roles can be "user", "owner", "admin"
+  role        String     // roles can be "user", "owner", "admin"
   location    String?    // Optional field
   phoneNumber String?    // Optional field
   rentals     Rental[]

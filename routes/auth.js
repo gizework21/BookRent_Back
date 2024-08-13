@@ -23,7 +23,7 @@ const generateToken = (user) => {
 
 // User registration
 router.post('/register', async (req, res) => {
-  const { username, email, password, location, phoneNumber } = req.body;
+  const { username, email, password, location, phoneNumber, role } = req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,7 +33,8 @@ router.post('/register', async (req, res) => {
         email,
         password: hashedPassword,
         location,
-        phoneNumber
+        phoneNumber,
+        role,
       }
     });
 

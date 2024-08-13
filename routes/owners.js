@@ -25,4 +25,50 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.put('/updateOwner/:id', async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body; // Expecting status to be passed in the request body
+  
+    try {
+      // Update the owner's status
+      const updatedOwner = await prisma.user.update({
+        where: { id: parseInt(id, 10) },
+        data: {
+          status: status, // Update the owner's status based on the input
+        },
+        include: {
+          books: true, // Optionally include related books
+        },
+      });
+  
+      res.json(updatedOwner);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  router.delete('/delete-user/:id', async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      // Delete the user by ID
+      const deletedUser = await prisma.user.delete({
+        where: { id: parseInt(id, 10) },
+      });
+  
+      res.json({ message: 'User deleted successfully', deletedUser });
+    } catch (error) {
+      console.error(error);
+  
+      // Check if the error is due to the user not being found
+      if (error.code === 'P2025') {
+        res.status(404).json({ error: 'User not found' });
+      } else {
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    }
+  });
+  
+
 module.exports = router;
